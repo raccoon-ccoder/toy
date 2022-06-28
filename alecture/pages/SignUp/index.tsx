@@ -1,21 +1,54 @@
-import React, { useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import { Form, Input, Label, Header, Button, LinkContainer, Error, Success } from '@pages/SignUp/style';
 import { Link } from 'react-router-dom';
 function SignUp() {
-  const [email, ChangeEmail] = useState('');
-  const [nickname, ChangeNickname] = useState('');
-  const [password, changePassword] = useState('');
-  const [passwordCheck, changePasswordCheck] = useState('');
+  const [email, setEmail] = useState('');
+  const [nickname, setNickname] = useState('');
+  const [password, setPassword] = useState('');
+  const [passwordCheck, setPasswordCheck] = useState('');
   const [mismatchError, setMismatchError] = useState(false);
   const [signUpError, setSignUpError] = useState('');
   const [signUpSuccess, setSignUpSuccess] = useState(false);
 
-  const onSubmit = () => {};
+  const onChangeEmail = useCallback((e: React.FormEvent<HTMLInputElement>) => {
+    setEmail(e.currentTarget.value);
+  }, []);
 
-  const onChangeEmail = () => {};
-  const onChangeNickname = () => {};
-  const onChangePassword = () => {};
-  const onChangePasswordCheck = () => {};
+  const onChangeNickname = useCallback((e: React.FormEvent<HTMLInputElement>) => {
+    setNickname(e.currentTarget.value);
+  }, []);
+
+  const onChangePassword = useCallback(
+    (e: React.FormEvent<HTMLInputElement>) => {
+      const {
+        currentTarget: { value },
+      } = e;
+      setPassword(value);
+      setMismatchError(value !== passwordCheck);
+    },
+    [passwordCheck],
+  );
+
+  const onChangePasswordCheck = useCallback(
+    (e: React.FormEvent<HTMLInputElement>) => {
+      const {
+        currentTarget: { value },
+      } = e;
+      setPasswordCheck(value);
+      setMismatchError(value !== password);
+    },
+    [password],
+  );
+
+  const onSubmit = useCallback(
+    (e: React.FormEvent<HTMLFormElement>) => {
+      e.preventDefault();
+      if (!mismatchError) {
+        console.log('서버로 회원가입');
+      }
+    },
+    [email, password, nickname, passwordCheck, mismatchError],
+  );
 
   return (
     <div id="container">

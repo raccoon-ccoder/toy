@@ -1,6 +1,11 @@
 import React from 'react';
-import { render } from 'react-dom';
+import ReactDOM from 'react-dom/client';
 
 import App from '@layouts/App';
 
-render(<App />, document.querySelector('#app'));
+const rootNode = document.getElementById('app') as HTMLElement;
+ReactDOM.createRoot(rootNode).render(
+  <React.StrictMode>
+    <App />
+  </React.StrictMode>,
+);
