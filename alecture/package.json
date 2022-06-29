@@ -4,8 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "TS_NODE_PROJECT=\"tsconfig-for-webpack-config.json\" webpack serve --env development",
-    "build": "TS_NODE_PROJECT=\"tsconfig-for-webpack-config.json\" webpack",
+    "dev": "cross-env TS_NODE_PROJECT=\"tsconfig-for-webpack-config.json\" webpack serve --env development",
+    "build": "cross-env NODE_ENV=production TS_NODE_PROJECT=\"tsconfig-for-webpack-config.json\" webpack",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "raccoon96",
@@ -18,6 +18,7 @@
     "@pmmmwh/react-refresh-webpack-plugin": "^0.5.7",
     "@types/react": "^18.0.14",
     "@types/react-dom": "^18.0.5",
+    "axios": "^0.27.2",
     "cross-env": "^7.0.3",
     "css-loader": "^6.7.1",
     "eslint-config-prettier": "^8.5.0",

@@ -77,10 +77,16 @@ const config: Configuration = {
     publicPath: '/dist/',
   },
   devServer: {
-    historyApiFallback: true, // 기존 CRA는 새로고침하면 주소를 기억하지 못하나 해당 설정으로 url주소를 기억해줌
+    historyApiFallback: true, // react router
     port: 3090,
     devMiddleware: { publicPath: '/dist/' },
     static: { directory: path.resolve(__dirname) },
+    proxy: {
+      '/api/': {
+        target: 'http://localhost:3095',
+        changeOrigin: true,
+      },
+    },
   },
 };
 
@@ -95,6 +101,7 @@ if (isDevelopment && config.plugins) {
   );
 }
 if (!isDevelopment && config.plugins) {
+  config.plugins.push(new webpack.LoaderOptionsPlugin({ minimize: true }));
 }
 
 export default config;
