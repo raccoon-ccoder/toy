@@ -1,10 +1,13 @@
 import React, { useCallback, useState } from 'react';
 import { Form, Input, Label, Header, Button, LinkContainer, Error, Success } from '@pages/SignUp/style';
-import { Link } from 'react-router-dom';
+import { Link, Navigate } from 'react-router-dom';
 import useInput from '@hooks/useInput';
 import axios from 'axios';
+import useSWR from 'swr';
+import fetcher from '@utils/fetcher';
 
 function SignUp() {
+  const { data: userData } = useSWR('http://localhost:3095/api/users', fetcher);
   const [email, , onChangeEmail] = useInput('');
   const [nickname, , onChangeNickname] = useInput('');
   const [password, setPassword, _] = useInput('');
@@ -61,6 +64,10 @@ function SignUp() {
     },
     [email, password, nickname, passwordCheck, mismatchError],
   );
+
+  if (userData) {
+    return <Navigate replace to="/workspace" />;
+  }
 
   return (
     <div id="container">
