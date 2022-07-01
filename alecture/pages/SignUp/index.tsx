@@ -53,7 +53,6 @@ function SignUp() {
           })
           .then((response) => {
             console.log(response);
-
             setSignUpSuccess(true);
           })
           .catch((err) => {
@@ -64,7 +63,7 @@ function SignUp() {
     },
     [email, password, nickname, passwordCheck, mismatchError],
   );
-
+  console.log(userData);
   if (userData) {
     return <Navigate replace to="/workspace" />;
   }
