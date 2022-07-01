@@ -5,7 +5,7 @@ import useSWR from 'swr';
 import fetcher from '@utils/fetcher';
 
 const DirectMessage = () => {
-  const { data: userData, error } = useSWR('http://localhost:3095/api/users', fetcher);
+  const { data: userData, error } = useSWR('/api/users', fetcher);
   return (
     <Container>
       <Header>

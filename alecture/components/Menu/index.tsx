@@ -6,7 +6,7 @@ interface Props {
   onCloseModal: (e: any) => void;
   style: CSSProperties;
   closeButton?: boolean;
-  children: JSX.Element;
+  children: any;
 }
 
 const Menu: FC<Props> = ({ children, style, show, onCloseModal, closeButton = true }) => {

@@ -9,7 +9,7 @@ import useSWR from 'swr';
 const LogIn = () => {
   // swr은 보통 다른 탭 클릭 후 클릭시 또 재요청을 함
   // dedupingInterval을 이용해 시간 설정하여 해당 시간이 지나기 전까지 요청 중복 제거
-  const { data: userData, error, mutate } = useSWR('http://localhost:3095/api/users', fetcher);
+  const { data: userData, error, mutate } = useSWR('/api/users', fetcher);
   const [logInError, setLogInError] = useState(false);
   const [email, , onChangeEmail] = useInput('');
   const [password, , onChangePassword] = useInput('');
@@ -28,7 +28,7 @@ const LogIn = () => {
           },
         )
         .then((res) => {
-          mutate(res.data, false);
+          mutate(res.data, true);
         })
         .catch((error) => {
           setLogInError(error.response?.status === 401);
@@ -42,7 +42,7 @@ const LogIn = () => {
   }
 
   if (userData) {
-    return <Navigate replace to="/workspace/channel" />;
+    return <Navigate replace to="/workspace/sleact/channel/일반" />;
   }
 
   return (

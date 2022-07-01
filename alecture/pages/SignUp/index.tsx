@@ -65,7 +65,7 @@ function SignUp() {
   );
   console.log(userData);
   if (userData) {
-    return <Navigate replace to="/workspace" />;
+    return <Navigate replace to="/workspace/sleact/channel/일반" />;
   }
 
   return (
