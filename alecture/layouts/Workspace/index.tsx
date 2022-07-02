@@ -68,7 +68,7 @@ const Workspace: FC = () => {
       .then((res) => {
         mutate(false, false);
       });
-  }, []);
+  }, [mutate]);
 
   const onCloseUserProfile = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
     e.stopPropagation();

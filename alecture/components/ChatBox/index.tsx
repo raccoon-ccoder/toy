@@ -1,8 +1,8 @@
 import { ChatArea, Form, MentionsTextarea, SendButton, Toolbox, EachMention } from '@components/ChatBox/styles';
 import autosize from 'autosize';
 import gravatar from 'gravatar';
-import React, { FC, useCallback, useEffect, useRef } from 'react';
-import { Mention, SuggestionDataItem } from 'react-mentions';
+import React, { useCallback, useEffect, useRef } from 'react';
+import { Mention } from 'react-mentions';
 
 interface Props {
   chat: string;
@@ -14,6 +14,7 @@ interface Props {
 
 const ChatBox = ({ onSubmitForm, chat, onChangeChat, placeholder, data }: Props) => {
   const textareaRef = useRef(null);
+
   useEffect(() => {
     if (textareaRef.current) {
       autosize(textareaRef.current);
@@ -21,9 +22,11 @@ const ChatBox = ({ onSubmitForm, chat, onChangeChat, placeholder, data }: Props)
   }, [textareaRef.current]);
 
   const onKeydownChat = useCallback(
-    (e) => {
+    (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
       if (e.key === 'Enter') {
+        // 엔터키가 눌렸을때
         if (!e.shiftKey) {
+          // shift 키가 눌리지 않았을때 submit => shift + enter 는 줄바꿈
           e.preventDefault();
           onSubmitForm(e);
         }
