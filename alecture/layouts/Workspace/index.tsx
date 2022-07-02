@@ -171,9 +171,7 @@ const Workspace: FC = () => {
         </Workspaces>
         <Channels>
           <WorkspaceName onClick={toggleWorkspaceModal}>Sleact</WorkspaceName>
-          {channelData?.map((ch) => {
-            return <div onClick={toggleWorkspaceModal}>{ch.name}</div>;
-          })}
+
           <MenuScroll>
             <Menu show={showWorkspaceModal} onCloseModal={toggleWorkspaceModal} style={{ top: 95, left: 80 }}>
               <WorkspaceModal>

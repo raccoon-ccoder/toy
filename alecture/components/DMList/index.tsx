@@ -1,23 +1,28 @@
 // import useSocket from '@hooks/useSocket';
 import { CollapseButton } from '@components/DMList/styles';
-import useSocket from '@hooks/useSocket';
+// import useSocket from '@hooks/useSocket';
 import { IUser, IUserWithOnline } from '@typings/db';
 import fetcher from '@utils/fetcher';
 import React, { FC, useCallback, useEffect, useState } from 'react';
-import { useQuery } from 'react-query';
 import { useParams } from 'react-router';
 import { NavLink } from 'react-router-dom';
+import useSWR from 'swr';
 
 const DMList: FC = () => {
   const { workspace } = useParams<{ workspace?: string }>();
-  const { data: userData } = useQuery<IUser>('user', () => fetcher({ queryKey: '/api/users' }), {});
+  const {
+    data: userData,
+    error,
+    mutate,
+  } = useSWR<IUser>('/api/users', fetcher, {
+    dedupingInterval: 1000 * 60 * 30,
+  });
 
-  const { data: memberData } = useQuery<IUserWithOnline[]>(
-    ['workspace', workspace, 'member'],
-    () => fetcher({ queryKey: `/api/workspaces/${workspace}/members` }),
-    { enabled: !!userData },
+  const { data: memberData } = useSWR<IUserWithOnline[]>(
+    userData ? `/api/workspaces/${workspace}/members` : null,
+    fetcher,
   );
-  const [socket] = useSocket(workspace);
+  // const [socket] = useSocket(workspace);
   const [channelCollapse, setChannelCollapse] = useState(false);
   const [onlineList, setOnlineList] = useState<number[]>([]);
 
@@ -30,25 +35,25 @@ const DMList: FC = () => {
     setOnlineList([]);
   }, [workspace]);
 
-  useEffect(() => {
-    socket?.on('onlineList', (data: number[]) => {
-      setOnlineList(data);
-    });
-    // socket?.on('dm', onMessage);
-    // console.log('socket on dm', socket?.hasListeners('dm'), socket);
-    return () => {
-      // socket?.off('dm', onMessage);
-      // console.log('socket off dm', socket?.hasListeners('dm'));
-      socket?.off('onlineList');
-    };
-  }, [socket]);
+  // useEffect(() => {
+  //   socket?.on('onlineList', (data: number[]) => {
+  //     setOnlineList(data);
+  //   });
+  //   // socket?.on('dm', onMessage);
+  //   // console.log('socket on dm', socket?.hasListeners('dm'), socket);
+  //   return () => {
+  //     // socket?.off('dm', onMessage);
+  //     // console.log('socket off dm', socket?.hasListeners('dm'));
+  //     socket?.off('onlineList');
+  //   };
+  // }, [socket]);
 
   return (
     <>
       <h2>
         <CollapseButton collapse={channelCollapse} onClick={toggleChannelCollapse}>
           <i
-            className="c-icon p-channel_sidebar__section_heading_expand p-channel_sidebar__section_heading_expand--show_more_feature c-icon--caret-right c-icon--inherit c-icon--inline"
+            className="c-icon p-channel_sidebar__section_heading_expand c-icon--caret-right c-icon--inherit c-icon--inline"
             data-qa="channel-section-collapse"
             aria-hidden="true"
           />
@@ -60,7 +65,11 @@ const DMList: FC = () => {
           memberData?.map((member) => {
             const isOnline = onlineList.includes(member.id);
             return (
-              <NavLink key={member.id} activeClassName="selected" to={`/workspace/${workspace}/dm/${member.id}`}>
+              <NavLink
+                key={member.id}
+                className={({ isActive }) => '' + (isActive ? 'selected' : null)}
+                to={`/workspace/${workspace}/dm/${member.id}`}
+              >
                 <i
                   className={`c-icon p-channel_sidebar__presence_icon p-channel_sidebar__presence_icon--dim_enabled c-presence ${
                     isOnline ? 'c-presence--active c-icon--presence-online' : 'c-icon--presence-offline'
