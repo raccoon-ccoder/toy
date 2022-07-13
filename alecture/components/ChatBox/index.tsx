@@ -35,20 +35,20 @@ const ChatBox = ({ onSubmitForm, chat, onChangeChat, placeholder, data }: Props)
     [chat],
   );
 
-  const renderUserSuggestion = useCallback(
-    (member, search, highlightedDisplay, index, focus) => {
-      if (!data) {
-        return null;
-      }
-      return (
-        <EachMention focus={focus}>
-          <img src={gravatar.url(data[index].email, { s: '20px', d: 'retro' })} alt={data[index].nickname} />
-          <span>{highlightedDisplay}</span>
-        </EachMention>
-      );
-    },
-    [data],
-  );
+  // const renderUserSuggestion = useCallback(
+  //   (member, search, highlightedDisplay, index, focus) => {
+  //     if (!data) {
+  //       return null;
+  //     }
+  //     return (
+  //       <EachMention focus={focus}>
+  //         <img src={gravatar.url(data[index].email, { s: '20px', d: 'retro' })} alt={data[index].nickname} />
+  //         <span>{highlightedDisplay}</span>
+  //       </EachMention>
+  //     );
+  //   },
+  //   [data],
+  // );
 
   return (
     <ChatArea>
@@ -62,12 +62,12 @@ const ChatBox = ({ onSubmitForm, chat, onChangeChat, placeholder, data }: Props)
           inputRef={textareaRef}
           allowSuggestionsAboveCursor
         >
-          <Mention
+          {/* <Mention
             appendSpaceOnAdd
             trigger="@"
             data={data?.map((v) => ({ id: v.id, display: v.nickname })) || []}
             renderSuggestion={renderUserSuggestion}
-          />
+          /> */}
         </MentionsTextarea>
         <Toolbox>
           <SendButton

@@ -75,11 +75,5 @@ export const EachMention = styled.button`
   & img {
     margin-right: 5px;
   }
-
-  ${({ focus }) =>
-    focus &&
-    `
-    background: #1264a3;
-    color: white;
-  `};
+  // focus 필요
 `;

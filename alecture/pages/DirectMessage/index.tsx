@@ -13,7 +13,7 @@ import React, { useCallback, useEffect, useRef } from 'react';
 import { useParams } from 'react-router';
 import { toast } from 'react-toastify';
 import useSWR from 'swr';
-import useSWRInfinite from 'swr';
+import useSWRInfinite from 'swr/infinite';
 
 const PAGE_SIZE = 20;
 const DirectMessage = () => {
@@ -32,8 +32,8 @@ const DirectMessage = () => {
   const [chat, setChat, onChangeChat] = useInput('');
   const scrollbarRef = useRef(null);
 
-  // const isEmpty = chatData?.[0]?.length === 0;
-  // const isReachingEnd = isEmpty || (chatData && chatData[chatData.length - 1]?.length < PAGE_SIZE);
+  const isEmpty = chatData?.[0]?.length === 0;
+  const isReachingEnd = isEmpty || (chatData && chatData[chatData.length - 1]?.length < PAGE_SIZE);
 
   const onSubmitForm = useCallback(
     (e: React.FormEvent<HTMLFormElement>) => {
@@ -44,7 +44,7 @@ const DirectMessage = () => {
           prevChatData?.[0].unshift({
             id: (chatData[0][0]?.id || 0) + 1,
             content: savedChat,
-            SenderId: myData.id,
+            SenderId: myData?.id,
             Sender: myData,
             ReceiverId: userData.id,
             Receiver: userData,
@@ -54,8 +54,8 @@ const DirectMessage = () => {
         }, false).then(() => {
           setChat('');
           if (scrollbarRef.current) {
-            console.log('scrollToBottom!', scrollbarRef.current?.getValues());
-            scrollbarRef.current.scrollToBottom();
+            // console.log('scrollToBottom!', scrollbarRef.current?.getValues());
+            // scrollbarRef.current.scrollToBottom();
           }
         });
         axios
@@ -120,13 +120,13 @@ const DirectMessage = () => {
         <img src={gravatar.url(userData.email, { s: '24px', d: 'retro' })} alt={userData.nickname} />
         <span>{userData.nickname}</span>
       </Header>
-      <ChatList
+      {/* <ChatList
         scrollbarRef={scrollbarRef}
         isReachingEnd={isReachingEnd}
         isEmpty={isEmpty}
         chatSections={chatSections}
         setSize={setSize}
-      />
+      /> */}
       <ChatBox
         onSubmitForm={onSubmitForm}
         chat={chat}
